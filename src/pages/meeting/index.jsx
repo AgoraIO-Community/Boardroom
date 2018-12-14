@@ -78,7 +78,7 @@ class Meeting extends React.Component {
         <div className="ag-header">
           <div className="ag-header-lead">
             <img className="header-logo" src={require('../../assets/images/five.png')} alt="" />
-            <span>Boardroom</span>&nbsp;-&nbsp;Time Left:&nbsp;
+            <span>Boardroom</span>&nbsp;-&nbsp;Time Remaining:&nbsp;
             <span className="time-remaining">{timeRemaining}</span>
           </div>
           <div className="ag-header-msg">
