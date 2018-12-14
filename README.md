@@ -28,9 +28,13 @@ Going after the following:
 
 ### Screenshots
 
+<p>Home page</p>
 <img width=500 src="./img/home1.png">
+<p>Home page with device management and resolution control</p>
 <img width=500 src="./img/home2.png">
+<p>Single participant view with metrics (live Audio and Video, Quality)</p>
 <img width=500 src="./img/video1.png">
+<p>Single participant view with metrics (live Audio and Video, Quality)</p>
 <img width=500 src="./img/video2.png">
 
 ## Local Dev Notes
