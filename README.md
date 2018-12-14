@@ -28,10 +28,10 @@ Going after the following:
 
 ### Screenshots
 
-<img width=400 src="./img/home1.png">
-<img width=400 src="./img/home2.png">
-<img width=400 src="./img/video1.png">
-<img width=400 src="./img/video2.png">
+<img width=500 src="./img/home1.png">
+<img width=500 src="./img/home2.png">
+<img width=500 src="./img/video1.png">
+<img width=500 src="./img/video2.png">
 
 ## Local Dev Notes
 First, create a developer account at [Agora.io](https://dashboard.agora.io/signin/), and obtain an App ID.
