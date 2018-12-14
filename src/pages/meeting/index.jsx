@@ -6,11 +6,24 @@ import AgoraVideoCall from "../../components/AgoraVideoCall";
 import { AGORA_APP_ID } from "../../agora.config";
 import { getTimer, setTimer } from "../../helpers/api";
 
+const TIMER_ENABLED = true
+
 class Meeting extends React.Component {
   state = {
     timeRemaining: undefined,
-    timer: undefined
+    timer: undefined,
+    showMetrics: false
   };
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
 
   constructor(props) {
     super(props);
@@ -25,6 +38,8 @@ class Meeting extends React.Component {
     }
     this.uid = undefined;
     this.getLastTime = this.getLastTime.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+
   }
 
   getLastTime(channelName) {
@@ -65,7 +80,7 @@ class Meeting extends React.Component {
   }
 
   componentDidMount() {
-    if (false) {
+    if (TIMER_ENABLED) {
       this.getLastTime(this.channel);
       this.setTimerSchedule();
     }
@@ -79,7 +94,7 @@ class Meeting extends React.Component {
   }
 
   render() {
-    const { timeRemaining } = this.state;
+    const { showMetrics, timeRemaining } = this.state;
     return (
       <div className="wrapper meeting">
         <div className="ag-header">
@@ -98,7 +113,15 @@ class Meeting extends React.Component {
             )}
           </div>
           <div className="ag-header-msg">
-            Room:&nbsp;<span id="room-name">{this.channel}</span>
+            Room:&nbsp;<span id="room-name">{this.channel}</span>,&nbsp;
+            <label>
+              Show Metrics: &nbsp;
+            <input
+              name="showMetrics"
+              type="checkbox"
+              checked={showMetrics}
+              onChange={this.handleInputChange} />
+            </label>
           </div>
         </div>
         <div className="ag-main">
@@ -111,6 +134,7 @@ class Meeting extends React.Component {
               baseMode={this.baseMode}
               appId={this.appId}
               uid={this.uid}
+              showMetrics={showMetrics}
             />
           </div>
         </div>

@@ -26,6 +26,36 @@
   border: none!important;
 }
 
+.ag-stats {
+  height: calc(70px);
+  width: calc(100% - 60px);
+  margin-left: 10px;
+  /* position: absolute; */
+  top: 5;
+  background: transparent;
+  z-index: 11;
+  color: white;
+  display: flex;
+  overflow: hidden;
+  /* justify-content: space-around; */
+}
+
+
+.ag-devices {
+  height: 200px;
+  width: calc(150px);
+  margin: 0 auto;
+  position: absolute;
+  top: 5;
+  right: 100;
+  background: transparent;
+  z-index: 11;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+}
+
+
 .ag-btn-group {
   height: 70px;
   width: calc(100% - 60px);

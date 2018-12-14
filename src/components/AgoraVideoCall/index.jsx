@@ -20,6 +20,12 @@ const tile_canvas = {
  * @prop transcode attendeeMode videoProfile channel baseMode
  */
 class AgoraCanvas extends React.Component {
+
+  state = {
+    devices: [],
+    interval: undefined
+  }
+
   constructor(props) {
     super(props)
     this.client = {}
@@ -42,11 +48,36 @@ class AgoraCanvas extends React.Component {
     }, 5000)
   }
 
-  setDeviceList() {
+  getDeviceList() {
+    const self = this
     AgoraRTC.getDevices(function (devices) {
-      var devCount = devices.length;
-      var id = devices[0].deviceId;
+      console.log('devices', JSON.stringify(devices))
+      self.setState( {devices })
+      devices.map(device => {
+        if (device.kind === 'audioinput') {
+          self.localStream.setAudioOutput(device.id)
+        }
+      })
     });
+  }
+
+  scheduleStats() {
+    const client = this.client
+    const stream = this.localStream
+    const self = this
+
+    stream.getStats(data => console.log('stats', JSON.stringify(data)))
+    client.getSystemStats(data => console.log('sys', data))
+    client.getLocalVideoStats(data => {
+      self.setState({videoStats: data}) 
+      console.log('video', data)
+    })
+    client.getLocalAudioStats(data => {
+      self.setState({audioStats: data}) 
+      console.log('audio', data)
+    })
+    client.getCameras(data => console.log('cameras', data))
+
   }
 
   componentWillMount() {
@@ -56,25 +87,33 @@ class AgoraCanvas extends React.Component {
     const client = this.client
     client.init($.appId, () => {
       this.subscribeStreamEvents()
-      client.enableAudioVolumeIndicator(2000); // Triggers the "volume-indicator" callback event every two seconds.
-      client.on("volume-indicator", function (evt) {
-        evt.attr.forEach(function (volume, index) {
-          console.log('indicator', volume, index)
-        });
-      });
-
+    
       client.join($.appId, $.channel, $.uid, (uid) => {
         // create local stream
         this.localStream = this.streamInit(uid, $.attendeeMode, $.videoProfile)
-        this.setMetricListeners(this.localStream)
-        this.setDeviceList()
-        this.localStream.init(() => {
+        const stream = this.localStream
+
+        // this.setMetricListeners(this.localStream)
+        stream.init(() => {
+          this.getDeviceList()
+          this.setMetricListeners(stream)
           if ($.attendeeMode !== 'audience') {
             this.addStream(this.localStream, true)
             client.publish(this.localStream, err => {
               console.log("Publish local stream error: " + err);
             })
           }
+
+        
+
+        client.enableAudioVolumeIndicator(); // Triggers the "volume-indicator" callback event every two seconds.
+        client.on("volume-indicator", function(evt){
+          console.log(evt)
+            evt.attr.forEach(function(volume, index){
+                    console.log(`${index} UID ${volume.uid} Level ${volume.level}`);
+            });
+        });
+        
 
           this.setState({ readyState: true })
         }, err => {
@@ -98,13 +137,21 @@ class AgoraCanvas extends React.Component {
       }, 2000)
     })
 
+
+    const interval = setInterval(() => this.scheduleStats(), 2000)
+    this.setState( {interval })
   }
 
-  // componentWillUnmount () {
-  //     // remove listener
-  //     let canvas = document.querySelector('#ag-canvas')
-  //     canvas.removeEventListener('mousemove')
-  // }
+  componentWillUnmount () {
+      // remove listener
+      let canvas = document.querySelector('#ag-canvas')
+      canvas.removeEventListener('mousemove')
+      const { interval } = this.state
+      if (interval) {
+        clearInterval(interval)
+      }
+
+  }
 
   componentDidUpdate() {
     // rerendering
@@ -154,13 +201,9 @@ class AgoraCanvas extends React.Component {
         }
         dom.setAttribute('style', `grid-area: ${tile_canvas[no][index]}`)
         item.player.resize && item.player.resize()
-
-
       })
-    }
-    // screen share mode (tbd)
-    else if (this.state.displayMode === 'share') {
-
+    } else if (this.state.displayMode === 'share') {
+      // TODO
     }
   }
 
@@ -226,8 +269,29 @@ class AgoraCanvas extends React.Component {
       </span>
     )
 
+    const renderStats = (title, stats) => {
+      return <div>
+      <b>{title}:</b><br/>
+      {Object.keys(stats).map((key, i) => {
+        const data = stats[key]
+        return <span key={i}>{Object.keys(data).map((field, j) => {
+          return `${field}: ${data[field]}`
+        }).join(", ")}</span>
+      })}
+
+    </div>
+    }
+
+    const { network, audioStats, videoStats } = this.state
+    const { showMetrics } = this.props
+
     return (
       <div id="ag-canvas" style={style}>
+        {showMetrics && <div className="ag-stats">
+          {/* {AgoraRTC && AgoraRTC.LiveTranscoding && JSON.stringify(AgoraRTC.LiveTranscoding)} */}
+          {videoStats && renderStats('Video Stats', videoStats)}
+          {audioStats && renderStats('Audio Stats', audioStats)}
+        </div>}
         <div className="ag-btn-group">
           {exitBtn}
           {videoControlBtn}
