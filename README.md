@@ -2,8 +2,16 @@
 
 - Join a meeting room contains 7 people at most (audiences will not be counted) with custom configuration
 
+Created for the Agora Video RTC Web Challenge:
+https://agora.devpost.com/
 
-## Running the App
+Going after the following featueres:
+1. Quality Transparency
+2. Device Management
+3. Volume Indicator
+
+
+## Dev Notes
 First, create a developer account at [Agora.io](https://dashboard.agora.io/signin/), and obtain an App ID.
 
 Update "agora.config.js" in "/src" with your App ID.

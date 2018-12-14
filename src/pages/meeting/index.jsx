@@ -4,8 +4,15 @@ import * as Cookies from 'js-cookie'
 import './meeting.css'
 import AgoraVideoCall from '../../components/AgoraVideoCall'
 import {AGORA_APP_ID} from '../../agora.config'
+import { getTimer, setTimer } from '../../helpers/api'
 
 class Meeting extends React.Component {
+
+  state = {
+    timeRemaining: undefined,
+    timer: undefined
+  }
+
   constructor(props) {
     super(props)
     this.videoProfile = (Cookies.get('videoProfile')).split(',')[0] || '480p_4',
@@ -18,16 +25,61 @@ class Meeting extends React.Component {
       return alert('Get App ID first!')
     }
     this.uid = undefined
+    this.getLastTime = this.getLastTime.bind(this)
+  }
 
+  getLastTime(channelName) {
+      getTimer(channelName).then(resp => {
+        const data = resp.data
+        const timeRemaining = this.sectostr(data.seconds_remaining)
+        this.setState({ timeRemaining })
+        console.log(this.state.timeRemaining)
+      }).catch(err => {
+        const data = err.response.data
+        if (data.errorMessage) {
+          if (data.errorMessage.indexOf('never been set') !== -1) {
+            setTimer(channelName).then(setResp => {
+              const setData = setResp.data
+              console.log('set timer', JSON.stringify(setData))
+            })
+          } else { // Timer ran out
+            window.location.href = "/"
+            alert('Meeting Timed Out!')
+          }
+        }
+      })
+    
+    }
+
+  sectostr(time) {
+    return ~~(time / 60) + ":" + (time % 60 < 10 ? "0" : "") + time % 60;
+  }
+
+  setTimerSchedule() {
+    const channelName = this.channel
+    const timer = setInterval(() => this.getLastTime(channelName), 1000)
+
+    this.setState({ timer })
+  }
+
+  componentDidMount() {
+    this.getLastTime(this.channel)
+    this.setTimerSchedule()
+  }
+
+  componentWillUnmount() {
+      clearInterval(this.state.timer)
   }
 
   render() {
+    const {timeRemaining} = this.state
     return (
       <div className="wrapper meeting">
         <div className="ag-header">
           <div className="ag-header-lead">
-            <img className="header-logo" src={require('../../assets/images/ag-logo.png')} alt="" />
-            <span>Boardroom</span>
+            <img className="header-logo" src={require('../../assets/images/five.png')} alt="" />
+            <span>Boardroom</span>&nbsp;-&nbsp;Time Left:&nbsp;
+            <span className="time-remaining">{timeRemaining}</span>
           </div>
           <div className="ag-header-msg">
             Room:&nbsp;<span id="room-name">{this.channel}</span>

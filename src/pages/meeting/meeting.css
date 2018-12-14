@@ -33,9 +33,14 @@ video {
   margin-right: 80px;
 }
 
+.time-remaining {
+  color: red;
+  font-weight: bold
+}
+
 .header-logo {
-  width: 60px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   margin-right: 12px;
 }
 
