@@ -34,7 +34,7 @@ Going after the following:
 <img width=500 src="./img/home2.png">
 <p>Single participant view with metrics (live Audio and Video, Quality)</p>
 <img width=500 src="./img/video1.png">
-<p>Single participant view with metrics (live Audio and Video, Quality)</p>
+<p>Multi participant view with metrics (live Audio and Video, Quality)</p>
 <img width=500 src="./img/video2.png">
 
 ## Local Dev Notes
