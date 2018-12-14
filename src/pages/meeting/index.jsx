@@ -27,7 +27,7 @@ class Meeting extends React.Component {
         <div className="ag-header">
           <div className="ag-header-lead">
             <img className="header-logo" src={require('../../assets/images/ag-logo.png')} alt="" />
-            <span>Boardroom for Five</span>
+            <span>Boardroom</span>
           </div>
           <div className="ag-header-msg">
             Room:&nbsp;<span id="room-name">{this.channel}</span>
@@ -47,7 +47,7 @@ class Meeting extends React.Component {
         </div>
         <div className="ag-footer">
           <a className="ag-href" href="https://www.agora.io"><span>Powered By Agora</span></a>
-          <span>Boardroom for Five</span>
+          <span>Boardroom</span>
         </div>
       </div>
     )

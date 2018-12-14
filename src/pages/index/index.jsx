@@ -53,8 +53,8 @@ class Index extends React.Component {
         <div className="ag-main">
           <section className="login-wrapper">
             <div className="login-header">
-              <img src={require("../../assets/images/ag-logo.png")} alt="" />
-              <p className="login-title">Boardroom for Five</p>
+              <img src={require("../../assets/images/five.png")} alt="" />
+              <p className="login-title">Boardroom</p>
               <p className="login-subtitle">
                 5 Minute Conference Rooms
               </p>
@@ -64,7 +64,7 @@ class Index extends React.Component {
                 <div className="column is-12">
                   <InputChannel
                     onChange={this.handleChannel}
-                    placeholder="Enter your room name"
+                    placeholder="Enter your Meeting name"
                   />
                 </div>
               </div>
@@ -129,7 +129,7 @@ class Index extends React.Component {
                       <span className="radio-btn" />
                       <span className="radio-img audience" />
                       <span className="radio-msg">
-                        Join Conference as observer
+                        Join Conference as Observer
                       </span>
                     </label>
                   </div>
@@ -153,7 +153,7 @@ class Index extends React.Component {
             <span>Powered By Agora</span>
           </a>
           <div>
-            <span>Boardroom for Five</span>
+            <span>Boardroom</span>
           </div>
         </div>
       </div>
@@ -355,7 +355,7 @@ class AdvancedOptions extends React.Component {
             aria-haspopup="true"
             aria-controls="advancedOptions"
           >
-            <span>Settings</span>
+            <span>Resolution</span>
           </a>
         </div>
         <div className="dropdown-menu" id="advancedOptions" role="menu">

@@ -1,4 +1,4 @@
-# Boardroom for Five
+# Boardroom
 
 - Join a meeting room contains 7 people at most (audiences will not be counted) with custom configuration
 
