@@ -35,7 +35,7 @@ class AgoraCanvas extends React.Component {
   }
 
   setMetricListeners(stream) {
-    setInterval(function() {
+    setInterval(function () {
       var audioLevel = stream.getAudioLevel();
       // Use audioLevel to render the UI
       console.log('audio', audioLevel)
@@ -43,11 +43,10 @@ class AgoraCanvas extends React.Component {
   }
 
   setDeviceList() {
-    AgoraRTC.getDevices (function(devices) {
+    AgoraRTC.getDevices(function (devices) {
       var devCount = devices.length;
-      
       var id = devices[0].deviceId;
-      });
+    });
   }
 
   componentWillMount() {
@@ -58,15 +57,14 @@ class AgoraCanvas extends React.Component {
     client.init($.appId, () => {
       this.subscribeStreamEvents()
       client.enableAudioVolumeIndicator(2000); // Triggers the "volume-indicator" callback event every two seconds.
-      client.on("volume-indicator", function(evt){
-          evt.attr.forEach(function(volume, index) {
-                  console.log('indicator', volume, index)
-          });
+      client.on("volume-indicator", function (evt) {
+        evt.attr.forEach(function (volume, index) {
+          console.log('indicator', volume, index)
+        });
       });
 
       client.join($.appId, $.channel, $.uid, (uid) => {
         // create local stream
-        // It is not recommended to setState in function addStream
         this.localStream = this.streamInit(uid, $.attendeeMode, $.videoProfile)
         this.setMetricListeners(this.localStream)
         this.setDeviceList()
@@ -78,17 +76,10 @@ class AgoraCanvas extends React.Component {
             })
           }
 
-
-          // setInterval(function() {
-          //   var audioLevel = this.localStream.getAudioLevel();
-          //   // Use audioLevel to render the UI
-          //   console.log('audio', audioLevel)
-          // }, 100)
           this.setState({ readyState: true })
-        },
-          err => {
-            this.setState({ readyState: true })
-          })
+        }, err => {
+          this.setState({ readyState: true })
+        })
       })
     })
   }
@@ -357,8 +348,7 @@ class AgoraCanvas extends React.Component {
 
   handleMic = (e) => {
     e.currentTarget.classList.toggle('off')
-    this.localStream.isAudioOn() ?
-      this.localStream.disableAudio() : this.localStream.enableAudio()
+    this.localStream.isAudioOn() ? this.localStream.disableAudio() : this.localStream.enableAudio()
   }
 
   switchDisplay = (e) => {

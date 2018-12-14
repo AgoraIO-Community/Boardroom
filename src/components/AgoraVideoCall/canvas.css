@@ -26,9 +26,6 @@
   border: none!important;
 }
 
-
-/* button group */
-
 .ag-btn-group {
   height: 70px;
   width: calc(100% - 60px);
@@ -51,8 +48,6 @@
   z-index: 12;
   opacity: 0;
   color: white;
-  /* width: 35px;
-    height: 35px; */
   cursor: pointer;
   font-size: 60px;
   display: inline-flex;
